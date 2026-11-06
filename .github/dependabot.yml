@@ -1,22 +1,120 @@
+# Dependabot version updates
+# Docs: https://docs.github.com/en/code-security/dependabot/working-with-dependabot/dependabot-options-reference
 version: 2
+
 updates:
+  # ---------------------------------------------------------------------------
+  # login microservice (Maven)
+  # ---------------------------------------------------------------------------
   - package-ecosystem: maven
     directory: "/login"
     schedule:
-      interval: daily
-      time: '05:00'
+      interval: weekly
+      day: monday
+      time: "05:00"
       timezone: Asia/Jakarta
     open-pull-requests-limit: 10
+    labels:
+      - dependencies
+      - java
+      - login
+    assignees:
+      - hendisantika
+    commit-message:
+      prefix: "build(deps)"
+      prefix-development: "build(deps-dev)"
+      include: scope
+    groups:
+      spring-boot:
+        patterns:
+          - "org.springframework.boot:*"
+      maven-plugins:
+        patterns:
+          - "org.apache.maven.plugins:*"
+          - "*-maven-plugin"
+      other-dependencies:
+        patterns:
+          - "*"
+        exclude-patterns:
+          - "org.springframework.boot:*"
+          - "org.apache.maven.plugins:*"
+          - "*-maven-plugin"
+        update-types:
+          - minor
+          - patch
 
+  # ---------------------------------------------------------------------------
+  # gateway (Maven, Spring Cloud Gateway Server WebMVC)
+  # ---------------------------------------------------------------------------
   - package-ecosystem: maven
     directory: "/gateway"
     schedule:
-      interval: daily
-      time: '05:00'
+      interval: weekly
+      day: monday
+      time: "05:00"
       timezone: Asia/Jakarta
     open-pull-requests-limit: 10
-    
-  - package-ecosystem: "github-actions"
+    labels:
+      - dependencies
+      - java
+      - gateway
+    assignees:
+      - hendisantika
+    commit-message:
+      prefix: "build(deps)"
+      prefix-development: "build(deps-dev)"
+      include: scope
+    ignore:
+      # Spring Cloud release trains are tied to a Spring Boot minor line
+      # (2025.1.x <-> Boot 4.0.x). Bump Boot minor/major together with the
+      # Spring Cloud train manually; only accept Boot patch releases here.
+      - dependency-name: "org.springframework.boot:spring-boot-starter-parent"
+        update-types:
+          - version-update:semver-major
+          - version-update:semver-minor
+      - dependency-name: "org.springframework.cloud:spring-cloud-dependencies"
+        update-types:
+          - version-update:semver-major
+    groups:
+      spring:
+        patterns:
+          - "org.springframework.boot:*"
+          - "org.springframework.cloud:*"
+      maven-plugins:
+        patterns:
+          - "org.apache.maven.plugins:*"
+          - "*-maven-plugin"
+      other-dependencies:
+        patterns:
+          - "*"
+        exclude-patterns:
+          - "org.springframework.boot:*"
+          - "org.springframework.cloud:*"
+          - "org.apache.maven.plugins:*"
+          - "*-maven-plugin"
+        update-types:
+          - minor
+          - patch
+
+  # ---------------------------------------------------------------------------
+  # GitHub Actions workflows
+  # ---------------------------------------------------------------------------
+  - package-ecosystem: github-actions
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: weekly
+      day: monday
+      time: "05:00"
+      timezone: Asia/Jakarta
+    open-pull-requests-limit: 5
+    labels:
+      - dependencies
+      - github_actions
+    assignees:
+      - hendisantika
+    commit-message:
+      prefix: "ci(deps)"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
