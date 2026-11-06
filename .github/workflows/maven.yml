@@ -79,5 +79,5 @@ jobs:
       - name: Update dependency graph
         uses: advanced-security/maven-dependency-submission-action@v6
         with:
-          directory: ${{ matrix.module }}
+          directory: ${{ github.workspace }}/${{ matrix.module }}
           correlator: ${{ github.job }}-${{ matrix.module }}
