@@ -5,18 +5,18 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.4.1</version>
+        <version>4.0.9</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.hendisantika</groupId>
     <artifactId>gateway</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>gateway</name>
-    <description>Demo project for Spring Boot</description>
+    <description>API gateway that filters and routes requests to the microservices</description>
 
     <properties>
-        <java.version>21</java.version>
-        <spring-cloud.version>2024.0.0</spring-cloud.version>
+        <java.version>25</java.version>
+        <spring-cloud.version>2025.1.4</spring-cloud.version>
     </properties>
 
     <dependencies>
@@ -26,7 +26,7 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <artifactId>spring-boot-starter-webmvc</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
