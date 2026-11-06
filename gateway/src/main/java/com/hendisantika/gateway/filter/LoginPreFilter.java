@@ -1,12 +1,10 @@
 package com.hendisantika.gateway.filter;
 
-import com.netflix.zuul.ZuulFilter;
-import com.netflix.zuul.context.RequestContext;
-import com.netflix.zuul.exception.ZuulException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.servlet.function.ServerRequest;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.function.Function;
 
 /**
  * Created by IntelliJ IDEA.
@@ -14,38 +12,23 @@ import javax.servlet.http.HttpServletRequest;
  * User: hendisantika
  * Email: hendisantika@gmail.com
  * Telegram : @hendisantika34
- * Date: 2019-06-19
- * Time: 04:56
+ * Link : s.id/hendisantika
+ * Date: 06/11/26
+ * Time: 07.01
  */
-public class LoginPreFilter extends ZuulFilter {
+public class LoginPreFilter implements Function<ServerRequest, ServerRequest> {
 
-    private static Logger logger = LoggerFactory.getLogger(LoginPreFilter.class);
+    private static final Logger logger = LoggerFactory.getLogger(LoginPreFilter.class);
 
+    /**
+     * "Pre" filter (formerly a Zuul {@code pre} filter): runs before the request is
+     * forwarded to the downstream service and logs the incoming request.
+     */
     @Override
-    public Object run() throws ZuulException {
-
-        RequestContext requestContext = RequestContext.getCurrentContext();
-        HttpServletRequest request = requestContext.getRequest();
-
-        logger.info("incoming request is captured by filter : " + request.getMethod() + " - "
-                + request.getRequestURI());
-        return null;
-
-    }
-
-    @Override
-    public boolean shouldFilter() {
-        return true;
-    }
-
-    @Override
-    public int filterOrder() {
-        return 1;
-    }
-
-    @Override
-    public String filterType() {
-        return "pre";
+    public ServerRequest apply(ServerRequest request) {
+        logger.info("incoming request is captured by filter : {} - {}",
+                request.method(), request.uri().getPath());
+        return request;
     }
 
 }
